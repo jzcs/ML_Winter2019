@@ -13126,7 +13126,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[100]:</div>
+<div class="prompt input_prompt">In&nbsp;[129]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -13144,7 +13144,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[130]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Load Data</span>
@@ -13176,8 +13176,6 @@ div#notebook {
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>(4601, 58)
-(4601, 57)
-(4601,)
 </pre>
 </div>
 </div>
@@ -13188,7 +13186,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[131]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Probabilistic Model</span>
@@ -13235,7 +13233,7 @@ test set: 	 prior_spam = 0.39 	 prior_not = 0.61
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[132]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Mean and standard Deviation of training set</span>
@@ -13267,11 +13265,13 @@ test set: 	 prior_spam = 0.39 	 prior_not = 0.61
 <span class="c1">#Not spam mean, std</span>
 <span class="n">not_means</span> <span class="o">=</span> <span class="n">X_train_not</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">not_stds</span> <span class="o">=</span> <span class="n">X_train_not</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">not_stds</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not stds found? &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">not_stds</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
 <span class="c1">#Spam mean, std</span>
 <span class="n">spam_means</span> <span class="o">=</span> <span class="n">X_train_spam</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">spam_stds</span> <span class="o">=</span> <span class="n">X_train_spam</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">spam_stds</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">#no need for +epsilon since no 0-standard deviations found</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;spam stds found? &quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">spam_stds</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">#no need for +epsilon if no 0-standard deviations found</span>
+<span class="n">not_stds</span> <span class="o">+=</span> <span class="n">epsilon</span>
+<span class="n">spam_stds</span> <span class="o">+=</span> <span class="n">epsilon</span>
 </pre></div>
 
     </div>
@@ -13294,8 +13294,8 @@ found first 1-class @ i =
 1394
 (1394, 57)
 (906, 57)
-0
-0
+not stds found?  0
+spam stds found?  1
 </pre>
 </div>
 </div>
@@ -13306,21 +13306,12 @@ found first 1-class @ i =
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[87]:</div>
+<div class="prompt input_prompt">In&nbsp;[133]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Running Naive Bayes on test data</span>
 <span class="n">not_minus_mu_sq</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span> <span class="o">-</span> <span class="n">not_means</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 <span class="n">spam_minus_mu_sq</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span> <span class="o">-</span> <span class="n">spam_means</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-
-<span class="c1">#X_minus_mu_sq = (X_test - X_train_means)**2</span>
-<span class="c1">#X_train_stds_sq = X_train_stds**2</span>
-<span class="c1">#print(X_minus_mu[0:2,25:33])</span>
-<span class="c1">#print(X_test[0:2, 25:33])</span>
-<span class="c1">#print(X_train_means[25:33])</span>
-<span class="c1">#print(X_minus_mu_sq.shape)</span>
-<span class="c1">#logN = np.log(1 / ( ((2*np.pi)**0.5)*X_train_stds ) ) - (X_minus_mu_sq/(2*X_train_stds_sq))</span>
-<span class="c1">#print(logN.shape)</span>
 
 <span class="n">logN_not</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">not_stds</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">not_minus_mu_sq</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">not_stds</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
 <span class="n">logN_spam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">spam_stds</span> <span class="p">)</span> <span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">spam_minus_mu_sq</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">spam_stds</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
@@ -13328,6 +13319,7 @@ found first 1-class @ i =
 <span class="n">sum_not</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">logN_not</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">prior_not</span><span class="p">)</span>
 <span class="n">sum_spam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">logN_spam</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">prior_spam</span><span class="p">)</span>
 
+<span class="c1">#Concating the spam &amp; not_spam values to argmax later</span>
 <span class="n">sum_joined</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span> <span class="p">(</span><span class="n">sum_not</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">sum_spam</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">sum_joined</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -13359,7 +13351,7 @@ found first 1-class @ i =
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[101]:</div>
+<div class="prompt input_prompt">In&nbsp;[134]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Results</span>
@@ -13392,12 +13384,12 @@ found first 1-class @ i =
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>accuracy = 0.834419817470665
-precision = 0.7228813559322034
-recall = 0.9404630650496141
+<pre>accuracy = 0.8166014776184267
+precision = 0.6969943135662063
+recall = 0.9459757442116868
 confusion matrix
-[[1067  327]
- [  54  853]]
+[[1021  373]
+ [  49  858]]
 </pre>
 </div>
 </div>
@@ -13420,7 +13412,7 @@ confusion matrix
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[102]:</div>
+<div class="prompt input_prompt">In&nbsp;[135]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
@@ -13433,7 +13425,7 @@ confusion matrix
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[108]:</div>
+<div class="prompt input_prompt">In&nbsp;[136]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#https://stackoverflow.com/questions/52640386/how-do-i-solve-the-future-warning-min-groups-self-n-splits-warning-in</span>
@@ -13473,12 +13465,12 @@ confusion matrix
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>accuracy = 0.9287266405910474
-precision = 0.9169472502805837
-recall = 0.9007717750826902
+<pre>accuracy = 0.9313342025206433
+precision = 0.9212598425196851
+recall = 0.9029768467475193
 confusion matrix
-[[1320   74]
- [  90  817]]
+[[1324   70]
+ [  88  819]]
 </pre>
 </div>
 </div>
@@ -13506,7 +13498,7 @@ confusion matrix
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="prompt input_prompt">In&nbsp;[137]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Numpy array broadcasting</span>
