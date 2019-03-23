@@ -10,8 +10,6 @@ def runChop(score, action, displ = 0):
         score: array size 4
     """
     fingers = 5
-    if displ:
-        print("current score", score)
 
     if action == 1:
         score[2] = (score[2] + score[0]) % fingers
@@ -28,9 +26,17 @@ def runChop(score, action, displ = 0):
     return score
 
 initScore = np.ones(4)
-myScore = initScore
+myScore = initScore.copy()
 while(myScore[0] != -1):
+    temp = myScore[0:2].copy()
+    myScore[0:2] = myScore[2:4]
+    myScore[2:4] = temp
+
+    print(myScore)
     myaction = int(input("enter action 1-4 (LL, LR, RL, RR)"))
+
     runChop(myScore, myaction, 1)
+
+
 
 print(myScore, initScore)
