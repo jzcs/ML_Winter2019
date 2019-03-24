@@ -13,7 +13,7 @@ class ChopStick(gym.Env):
     self.fingers = 5
     self.counter = 0
     self.done = 0
-    self.add = [0, 0] #Player wincounts
+    self.add = [0, 0] #Player win
     self.reward = 0
 
   def setFingers(self, f):
@@ -58,6 +58,16 @@ class ChopStick(gym.Env):
     #if(self.counter == 100):
     #self.done = 1;
     self.counter += 1
+    win = self.check()
+    if(win):
+        self.done = 1
+        print("player ", win, " wins")
+        self.add[win-1] = 1
+        if win == 1:
+            self.reward = 100
+        else:
+            self.reward = -100
+
     self.render()
     return [self.state, self.reward, self.done, self.add]
 
