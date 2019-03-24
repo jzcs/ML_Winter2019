@@ -83,9 +83,9 @@ def qLearning(env, num_episodes, discount_factor = 1.0,
             stats.episode_lengths[ith_episode] = t
 
             # TD Update
-            best_next_action = np.argmax(Q[next_state])
+            best_next_action = np.argmax(Q[tuple(tuple(x) for x in next_state)])
             td_target = reward + discount_factor * Q[tuple(tuple(x) for x in next_state)][best_next_action]
-            td_delta = td_target - Q[state][action]
+            td_delta = td_target - Q[tuple(tuple(x) for x in state)][action]
             Q[tuple(tuple(x) for x in state)][action] += alpha * td_delta
 
             # done is True if episode terminated
