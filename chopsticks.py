@@ -1,9 +1,4 @@
-import gym
-from gym import error, spaces, utils
-from gym.utils import seeding
-
-class ChopStick(gym.Env):
-    metadata = {'render.modes': ['human']}
+class ChopStick(object):
     def __init__(self):
         self.state = []
         for i in range(2):
