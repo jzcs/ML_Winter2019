@@ -34,17 +34,19 @@ class ChopStick(gym.Env):
     o = (p+1)%2 #opponent
     c = action%2 #target card
     if self.done == 1:
-      print("Game Over")
-      return [self.state, self.reward, self.done, self.add]
+      print("Game Over", self.counter)
+      return [self.state, self.reward, self.done, self.add, self.counter]
     if action < 2: #LL, LR
       if self.state[p][0] == 0: #Prevent add 0 moves
         print("Invalid Step")
-        return [self.state, self.reward, self.done, self.add]
+#        self.reward = -1000 #TO BE IMPLEMENTED -- TRAIN TO RECOGNIZE INVALID MOVES
+        return [self.state, self.reward, self.done, self.add, self.counter]
       self.state[o][c] = (self.state[o][c] + self.state[p][0]) %self.fingers
     elif action < 4: #RL, RR
       if self.state[p][1] == 0:
+#        self.reward = -1000
         print("Invalid Step")
-        return [self.state, self.reward, self.done, self.add]
+        return [self.state, self.reward, self.done, self.add, self.counter]
       self.state[o][c] = (self.state[o][c] + self.state[p][1]) %self.fingers
     elif action == 4: #Split
       if ((self.state[p][0] == 0 and (self.state[p][1]%2) == 0)
@@ -54,22 +56,26 @@ class ChopStick(gym.Env):
         self.state[p][1] = temp
       else:
         print("Invalid Step")
-        return [self.state, self.reward, self.done, self.add]
-    #if(self.counter == 100):
-    #self.done = 1;
+#        self.reward = -1000
+        return [self.state, self.reward, self.done, self.add, self.counter]
+    #Time penalty
+#    if(self.counter > 40):
+#      self.done = 1
+#      self.reward = -100
+#      print("too long!")
     self.counter += 1
     win = self.check()
     if(win):
         self.done = 1
-        print("player ", win, " wins")
+        print("player ", win, " wins", self.counter)
         self.add[win-1] = 1
         if win == 1:
-            self.reward = 100
+          self.reward = 100
         else:
-            self.reward = -100
+          self.reward = -100
 
     self.render()
-    return [self.state, self.reward, self.done, self.add]
+    return [self.state, self.reward, self.done, self.add, self.counter]
 
   def reset(self):
     for i in range(2):
